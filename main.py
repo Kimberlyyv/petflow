@@ -1,5 +1,5 @@
 from datetime import date
-from pawpal_system import Owner, Pet, Task, Scheduler
+from src.scheduler import Owner, Pet, Task, Scheduler
 
 owner = Owner("Kimberly", 90, "Morning tasks preferred")
 

@@ -1,14 +1,15 @@
 import streamlit as st
 from datetime import date
-from pawpal_system import Owner, Pet, Task, Scheduler
+from src.scheduler import Owner, Pet, Task, Scheduler
+from src.retrieval import get_guideline
 
-st.set_page_config(page_title="PawPal+", page_icon="🐾", layout="centered")
+st.set_page_config(page_title="PetFlow+", page_icon="🐾", layout="centered")
 
-st.title("🐾 PawPal+")
+st.title("🐾 PetFlow+")
 
 st.markdown(
     """
-Welcome to PawPal+.
+Welcome to PetFlow+.
 
 This app helps a pet owner keep track of pet care tasks and generate a daily schedule.
 """
@@ -17,7 +18,7 @@ This app helps a pet owner keep track of pet care tasks and generate a daily sch
 with st.expander("Scenario", expanded=True):
     st.markdown(
         """
-**PawPal+** is a pet care planning assistant. It helps a pet owner plan care tasks
+**PetFlow+** is a pet care planning assistant. It helps a pet owner plan care tasks
 for their pet(s) based on constraints like time, priority, and preferences.
 """
     )
@@ -65,23 +66,34 @@ if st.session_state.owner.pets:
     frequency = st.selectbox("Frequency", ["daily", "weekly", "once"])
 
     if st.button("Add Task"):
-        selected_pet = None
-        for pet in st.session_state.owner.pets:
-            if pet.name == selected_pet_name:
-                selected_pet = pet
-                break
+        if not task_title.strip():
+            st.error("Task title cannot be empty.")
 
-        if selected_pet:
-            new_task = Task(
-                task_title,
-                int(duration),
-                int(priority_number),
-                task_time,
-                frequency,
-                date.today()
-            )
-            selected_pet.add_task(new_task)
-            st.success(f"Task added for {selected_pet.name}.")
+        elif ":" not in task_time:
+            st.error("Time must be in HH:MM format.")
+
+        else:
+            selected_pet = None
+            for pet in st.session_state.owner.pets:
+                if pet.name == selected_pet_name:
+                    selected_pet = pet
+                    break
+
+            if selected_pet:
+                new_task = Task(
+                    task_title,
+                    int(duration),
+                    int(priority_number),
+                    task_time,
+                    frequency,
+                    date.today()
+                )
+                selected_pet.add_task(new_task)
+
+                st.success(f"Task added for {selected_pet.name}.")
+
+                guideline = get_guideline(selected_pet.species, task_title)
+                st.info(f"Care tip: {guideline}")
 else:
     st.info("Add a pet first before creating tasks.")
 

@@ -138,17 +138,25 @@ class Scheduler:
                         return
 
     def detect_conflicts(self) -> List[str]:
-        """Detect tasks that have the exact same time."""
+        """Detect tasks that are scheduled at the same time and explain the conflict."""
         seen_times = {}
         conflicts = []
 
         for pet in self.owner.pets:
             for task in pet.tasks:
                 if task.time in seen_times:
+                    first_task = seen_times[task.time]
+
                     conflicts.append(
-                        f"Conflict detected at {task.time} between '{seen_times[task.time]}' and '{task.description}'"
+                        f"Schedule conflict at {task.time}: "
+                        f"'{first_task['description']}' for {first_task['pet_name']} and "
+                        f"'{task.description}' for {pet.name} are planned at the same time. "
+                        f"Consider moving one task to a different time."
                     )
                 else:
-                    seen_times[task.time] = task.description
+                    seen_times[task.time] = {
+                        "description": task.description,
+                        "pet_name": pet.name
+                    }
 
         return conflicts

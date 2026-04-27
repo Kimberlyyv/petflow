@@ -1,0 +1,17 @@
+[
+  {
+    "pet_type": "dog",
+    "task": "walk",
+    "guideline": "Dogs need regular walks for exercise and health."
+  },
+  {
+    "pet_type": "cat",
+    "task": "clean litter box",
+    "guideline": "Litter boxes should be cleaned daily."
+  },
+  {
+    "pet_type": "dog",
+    "task": "feed",
+    "guideline": "Feed dogs at consistent times each day."
+  }
+]
