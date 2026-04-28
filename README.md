@@ -1,78 +1,91 @@
-# PawPal+ (Module 2 Project)
+# PetFlow: Smart Pet Care Scheduling System
 
-You are building **PawPal+**, a Streamlit app that helps a pet owner plan care tasks for their pet.
+### Original Project (PawPal+)
 
-## Scenario
+This project builds on my earlier PawPal+ application, which was a pet care scheduling tool that allowed users to create and manage tasks for their pets. The original system focused on organizing tasks and generating a daily schedule based on time and priority.
 
-A busy pet owner needs help staying consistent with pet care. They want an assistant that can:
+### Project Overview
 
-- Track pet care tasks (walks, feeding, meds, enrichment, grooming, etc.)
-- Consider constraints (time available, priority, owner preferences)
-- Produce a daily plan and explain why it chose that plan
+PetFlow is a pet care scheduling system that helps users organize daily and recurring tasks, detect scheduling conflicts, and receive helpful care suggestions. The system combines scheduling logic with a simple retrieval feature that provides pet care guidelines based on the task being added.
 
-Your job is to design the system first (UML), then implement the logic in Python, then connect it to the Streamlit UI.
+This project demonstrates how structured data and rule-based logic can improve user decision-making and make the system more reliable.
 
-## What you will build
+### Architecture Overview
 
-Your final app should:
+PetFlow is built using a modular structure:
 
-- Let a user enter basic owner + pet info
-- Let a user add/edit tasks (duration + priority at minimum)
-- Generate a daily schedule/plan based on constraints and priorities
-- Display the plan clearly (and ideally explain the reasoning)
-- Include tests for the most important scheduling behaviors
+- **Streamlit UI (`app.py`)**: Handles user input and displays results  
+- **Scheduler (`src/scheduler.py`)**: Manages tasks, generates schedules, and detects conflicts  
+- **Retrieval System (`src/retrieval.py`)**: Looks up pet care guidelines  
+- **Data (`data/pet_care_rules.json`)**: Stores pet care rules  
 
-## Getting started
+Flow:
+User Input → Task Creation → Scheduler Logic → Retrieval → Output (schedule + warnings + tips)
 
-### Setup
 
+### Setup Instructions
+
+Clone the repository:
 ```bash
-python -m venv .venv
-source .venv/bin/activate  # Windows: .venv\Scripts\activate
+git clone https://github.com/Kimberlyyv/petflow.git
+cd petflow
+
+Install dependencies:
 pip install -r requirements.txt
 
+Run the app:
+python -m streamlit run app.py
 
-### Suggested workflow
+### Sample Interactions
 
-1. Read the scenario carefully and identify requirements and edge cases.
-2. Draft a UML diagram (classes, attributes, methods, relationships).
-3. Convert UML into Python class stubs (no logic yet).
-4. Implement scheduling logic in small increments.
-5. Add tests to verify key behaviors.
-6. Connect your logic to the Streamlit UI in `app.py`.
-7. Refine UML so it matches what you actually built.
+Example 1: Adding a Task
 
-## Smarter Scheduling
+Input: Dog → “walk” → 08:00
+Output:
+Task added
+Care tip: Dogs need regular walks for exercise and health
 
-## Features
+Example 2: Conflict Detection
 
-PawPal+ helps pet owners manage daily care tasks through a simple scheduling system.
+Input: Two tasks at 08:00
+Output:
+Warning explaining which tasks conflict and why
 
-Key features include:
+Example 3: Invalid Input
 
-- Add pets and store their information
-- Create pet care tasks with duration and priority
-- Sort tasks by scheduled time
-- Filter tasks by completion status
-- Detect scheduling conflicts between tasks
-- Automatically create recurring tasks for daily or weekly activities
-- Generate a daily schedule based on available time
+Input: Empty task title
+Output:
+Error message preventing submission
 
-## Testing PawPal+
+### Design Decisions
+Used a simple JSON dataset for retrieval to keep the system lightweight and explainable
+Separated logic into modules (scheduler, retrieval) for better organization
+Prioritized clarity over complexity to ensure the system is easy to understand and maintain
+Added guardrails (input validation) to improve reliability and prevent incorrect data
 
-To run the automated tests:
+### Testing Summary
+Tested task creation with valid and invalid inputs
+Verified conflict detection by creating overlapping tasks
+Confirmed retrieval system returns correct guidelines based on pet type and task
+Guardrails successfully prevented empty inputs and incorrect time formats
 
-```bash
-python -m pytest
+### Reflection
 
-##  Demo
+One limitation of this system is that the retrieval feature relies on a small predefined dataset, so it may not cover all possible pet care scenarios. Additionally, the system assumes that user input is mostly accurate beyond basic validation.
 
-Below is a screenshot of the PawPal+ Streamlit interface.
+The system could potentially be misused if users rely on it for critical pet care decisions without verifying the information. To reduce this risk, the system provides simple guidelines rather than authoritative advice.
 
-<a href="/course_images/ai110/pawpal_demo.png" target="_blank">
-<img src='/course_images/ai110/pawpal_demo.png' title='PawPal App' alt='PawPal App' class='center-block' />
-</a>
+While working on this project, I found that breaking the system into smaller components made debugging and improvements much easier. One helpful use of AI was generating structured logic ideas, while one limitation was that some suggestions required adjustments to fit the project’s design.
 
-## System Architecture (UML)
+### Portfolio Reflection
 
-![PawPal UML](uml_final.png)
+This project shows my ability to take an initial prototype and turn it into a more structured and reliable system. It highlights my skills in Python, modular design, and building user-focused applications that incorporate data-driven logic.
+
+### System Architecture
+![System Architecture](assets/architecture.png)
+
+### UML Diagram
+![UML Diagram](uml_final.png)
+
+### Demo Video
+(https://imgur.com/a/Jw8ixpu)
